@@ -1,4 +1,4 @@
-CREATE DATABASE chat;
+-- CREATE DATABASE chat;
 
 USE chat;
 
@@ -44,16 +44,16 @@ CREATE TABLE `rooms` (
 -- Table 'messages'
 -- 
 -- ---
-
 DROP TABLE IF EXISTS `messages`;
     
 CREATE TABLE messages ( 
-  'id' INTEGER NOT NULL AUTO_INCREMENT DEFAULT 0, 
-  'message' MEDIUMTEXT,
-  'in_room' INTEGER NOT NULL, 
-  'user' INTEGER NOT NULL,
-  PRIMARY KEY ( ' id ' ) 
+  `id` INTEGER NOT NULL AUTO_INCREMENT, 
+  `message` MEDIUMTEXT,
+  `in_room` INTEGER NOT NULL, 
+  `user` INTEGER NOT NULL,
+  PRIMARY KEY ( `id` ) 
 );
+
 
 -- ---
 -- Table 'room_messages'
@@ -63,9 +63,9 @@ CREATE TABLE messages (
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `users` ADD FOREIGN KEY (current_room) REFERENCES `rooms` (`id`);
-ALTER TABLE `messages` ADD FOREIGN KEY (room) REFERENCES `rooms` (`id`);
-ALTER TABLE `messages` ADD FOREIGN KEY (user) REFERENCES `users` (`id`);
+-- ALTER TABLE `users` ADD FOREIGN KEY (current_room) REFERENCES `rooms` (`id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (room) REFERENCES `rooms` (`id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (user) REFERENCES `users` (`id`);
 
 -- ---
 -- Table Properties
