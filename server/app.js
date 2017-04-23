@@ -18,6 +18,21 @@ app.set('port', 3000);
 app.use(morgan('dev'));
 app.use(parser.json());
 
+
+
+app.use(function(req, res, next) {
+  var headers = {
+    'access-control-allow-origin': '*',
+    'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'access-control-allow-headers': 'content-type, accept',
+    'access-control-max-age': 10,
+    'Content-Type': 'application/json' // Seconds.
+  };
+
+  res.set(headers);
+  next();
+});
+
 // Set up our routes
 app.use('/classes', router);
 

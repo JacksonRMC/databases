@@ -8,7 +8,7 @@ var userName = window.location.search.substring(window.location.search.indexOf('
 var App = function() {
   this.server = clientUrl;
   this.currentUser = userName;
-  this.currentRoom;
+  this.currentRoom = 'lobby';
 };
 
 App.prototype.init = function() {
@@ -43,13 +43,14 @@ App.prototype.fetch = function(newData) {
 
   $.ajax({
     url: context.server,
-    // data: 'order=-createdAt',
+    data: {'roomname': this.currentRoom, 'username': this.currentUser},
+    //data: `roomAndUser=${this.currentRoom: this.currentUser}`,
     type: 'GET',
     success: function(data) {
       // console.log('Data fetched');
       context.clearMessages();
 
-      data.results.forEach(function(message) {
+      data.forEach(function(message) {
         
         if (!context.hasEscape(message)) {
           if (newData !== undefined) {

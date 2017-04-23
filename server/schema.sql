@@ -1,4 +1,5 @@
--- CREATE DATABASE chat;
+DROP DATABASE IF EXISTS `chat`;
+CREATE DATABASE chat;
 
 USE chat;
 
@@ -21,10 +22,10 @@ USE chat;
 DROP TABLE IF EXISTS `users`;
     
 CREATE TABLE `users` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `name` MEDIUMTEXT NOT NULL,
-  `current_room` INTEGER NOT NULL,
-  PRIMARY KEY (`id`)
+  `user_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `username` MEDIUMTEXT NOT NULL,
+  `user_current_room` INTEGER DEFAULT 1,
+  PRIMARY KEY (`user_id`)
 );
 
 -- ---
@@ -35,9 +36,9 @@ CREATE TABLE `users` (
 DROP TABLE IF EXISTS `rooms`;
     
 CREATE TABLE `rooms` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `name` MEDIUMTEXT NULL,
-  PRIMARY KEY (`id`)
+  `room_id` INTEGER NOT NULL AUTO_INCREMENT,
+  `roomname` MEDIUMTEXT NULL,
+  PRIMARY KEY (`room_id`)
 );
 
 -- ---
@@ -47,11 +48,11 @@ CREATE TABLE `rooms` (
 DROP TABLE IF EXISTS `messages`;
     
 CREATE TABLE messages ( 
-  `id` INTEGER NOT NULL AUTO_INCREMENT, 
+  `message_id` INTEGER NOT NULL AUTO_INCREMENT, 
   `message` MEDIUMTEXT,
-  `in_room` INTEGER NOT NULL, 
-  `user` INTEGER NOT NULL,
-  PRIMARY KEY ( `id` ) 
+  `message_room_id` INTEGER DEFAULT 1, 
+  `message_user_id` INTEGER NOT NULL,
+  PRIMARY KEY ( `message_id` ) 
 );
 
 
@@ -63,13 +64,18 @@ CREATE TABLE messages (
 -- Foreign Keys 
 -- ---
 
--- ALTER TABLE `users` ADD FOREIGN KEY (current_room) REFERENCES `rooms` (`id`);
--- ALTER TABLE `messages` ADD FOREIGN KEY (room) REFERENCES `rooms` (`id`);
--- ALTER TABLE `messages` ADD FOREIGN KEY (user) REFERENCES `users` (`id`);
+-- ALTER TABLE `users` ADD FOREIGN KEY (user_current_room) REFERENCES `rooms` (`room_id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (message_room_id) REFERENCES `rooms` (`room_id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (message_user_id) REFERENCES `users` (`user_id`);
 
 -- ---
 -- Table Properties
 -- ---
+
+-- Select message with text for roomname and username
+-- select messages.message, rooms.name, users.name from 
+-- (messages INNER JOIN rooms ON messages.in_room=rooms.id 
+-- INNER JOIN users ON messages.user = users.id);
 
 -- ALTER TABLE `users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `rooms` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -80,14 +86,9 @@ CREATE TABLE messages (
 -- ---
 -- Test Data
 -- ---
-
--- INSERT INTO `users` (`id`,`name`,`current_room`) VALUES
--- ('','','');
--- INSERT INTO `rooms` (`id`,`name`) VALUES
--- ('','');
--- INSERT INTO `messages` (`id`,`message`,`room`,`user`) VALUES
--- ('','','','');
--- INSERT INTO `room_messages` (`id`) VALUES
--- ('');
--- INSERT INTO `user_messages` (`id`) VALUES
--- ('');
+INSERT INTO `rooms` (`room_id`,`roomname`) VALUES
+(1,'lobby'), (2, 'otherRoom');
+INSERT INTO `users` (`user_id`,`username`,`user_current_room`) VALUES
+(1,'superuser', 1);
+INSERT INTO `messages` (`message_id`,`message`,`message_room_id`,`message_user_id`) VALUES
+(1,'hello world', 1, 1), (2, 'victory', 1, 1), (3, 'message in other room', 2, 1);
